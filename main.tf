@@ -41,6 +41,21 @@ resource "helm_release" "redis" {
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "redis"
   version    = "19.5.0"
+
+  set {
+    name  = "image.registry"
+    value = "gcr.io/devenv"
+  }
+
+  set {
+    name  = "image.repository"
+    value = "bitnami/redis"
+  }
+
+  set {
+    name  = "image.tag"
+    value = "7.2.5"
+  }
 }
 
 resource "helm_release" "webapp1" {
@@ -64,6 +79,7 @@ output "redis_status" {
 output "redis_namespace" {
   value = helm_release.redis.namespace
 }
+
 
 
 
