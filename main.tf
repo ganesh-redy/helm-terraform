@@ -38,7 +38,7 @@ provider "helm" {
 variable "namespace" {
   description = "Target namespace"
   type        = string
-  default     = "cluster"
+  default     = "harness-delegate-ng"
 }
 
 variable "redis_name" {
@@ -85,6 +85,7 @@ output "redis_status" {
 output "redis_namespace" {
   value = helm_release.redis.namespace
 }
+
 
 
 
