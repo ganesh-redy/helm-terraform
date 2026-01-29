@@ -36,26 +36,25 @@ provider "helm" {
 
 # variables.tf
 variable "namespace" {
-  description = "Target namespace"
-  type        = string
-  default     = "harness-delegate-ng"
+  type    = string
+  default = "app-env"
 }
 
-variable "redis_name" {
-  description = "Redis Helm release name"
-  type        = string
-  default     = "redis"
-}
 
 
 
 # main.tf
-resource "kubernetes_namespace" "redis_ns" {
-  metadata {
-    name = var.namespace
-  }
-}
 
+
+
+resource "helm_release" "redis" {
+  name      = "redis"
+  namespace = var.namespace
+
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "redis"
+  version    = "19.5.0"
+}
 
 resource "helm_release" "webapp1" {
   name      = "webapp1"
@@ -67,14 +66,7 @@ resource "helm_release" "webapp1" {
     file("${path.module}/helm1/webapp1/values.yaml")
   ]
 }
-resource "helm_release" "redis" {
-  name      = "redis"
-  namespace = var.namespace
 
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "redis"
-  version    = "19.5.0"
-}
 
 
 # outputs.tf
@@ -85,6 +77,7 @@ output "redis_status" {
 output "redis_namespace" {
   value = helm_release.redis.namespace
 }
+
 
 
 
