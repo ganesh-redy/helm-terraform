@@ -34,22 +34,9 @@ provider "helm" {
 
 
 
-# variables.tf
-variable "namespace" {
-  type    = string
-  default = "app-env"
-}
-
-
-
-
-# main.tf
-
-
-
 resource "helm_release" "redis" {
   name      = "redis"
-  namespace = var.namespace
+  namespace = "app-env"
 
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "redis"
@@ -58,7 +45,7 @@ resource "helm_release" "redis" {
 
 resource "helm_release" "webapp1" {
   name      = "webapp1"
-  namespace = var.namespace
+  namespace = "app-env"
 
   chart = "${path.module}/helm1/webapp1"
 
@@ -77,6 +64,7 @@ output "redis_status" {
 output "redis_namespace" {
   value = helm_release.redis.namespace
 }
+
 
 
 
